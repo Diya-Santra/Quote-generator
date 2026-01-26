@@ -15,7 +15,13 @@ const userSchema=new mongoose.Schema({
         required:true
     },
     profilePicture:{
-        type:String
+        type:String,
+    },
+    role: {
+        type: String,
+        enum: ["user", "admin"],
+        default: "user",
+        // Role can only be changed directly in database, not during registration
     }
 })
 
