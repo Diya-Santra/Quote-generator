@@ -99,3 +99,38 @@ export const getAllCards = async (req, res) => {
     });
   }
 };
+
+//search cards
+export const searchCards = async (req, res) => {
+  try {
+    const { query } = req.params;
+
+    if (!query) {
+      return res.status(400).json({
+        message: "Please provide a search query",
+      });
+    }
+
+    const searchRegex = new RegExp(query, "i");
+
+    const cards = await Card.find({
+      $or: [
+        { title: searchRegex },
+        { author: searchRegex },
+        { category: searchRegex },
+        { quote: searchRegex },
+        { hashtags: { $in: [searchRegex] } },
+      ],
+    });
+
+    res.status(200).json({
+      query: query,
+      results: cards.length,
+      cards: cards,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error searching cards",
+    });
+  }
+};
