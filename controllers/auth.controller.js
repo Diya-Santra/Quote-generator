@@ -5,7 +5,8 @@ import jwt from "jsonwebtoken";
 
 //user register controller
 export const userRegister = async (req, res) => {
-  const { name, email, password, profilePicture } = req.body;
+  const { name, email, password } = req.body;
+  const profilePicture=req.file.filename
   const isUserAlreadyExist = await User.findOne({
     email,
   });
@@ -37,6 +38,11 @@ export const userRegister = async (req, res) => {
       profilePicture: profilePicture,
     },
   });
+
+  console.log(req.file);
+  console.log(req.body);
+  
+  
 };
 
 //user login controller
